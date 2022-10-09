@@ -1,0 +1,114 @@
+<div style="margin-top: 64px;"></div>
+<div style="display: flex; flex-flow: wrap; justify-content: space-around;" class="currencyExc" *ngIf="isLoaded">
+  <div style="text-align: center;">
+    <img [src]="currency1a.imageUrl" alt="" style="transform: translatey(-40px);" />
+    <button style="display: block; width: 100%;" [matMenuTriggerFor]="currency1" matTooltip="Select Currency" mat-button
+      class="fiatBtn">
+      <span>{{ currency1a.name | uppercase }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-form-field appearance="legacy" style="margin-top: 4px;">
+      <mat-label>Currency 1</mat-label>
+      <input matInput placeholder="Enter a valid currency value" type="number" [(ngModel)]="currency1Value"
+        (ngModelChange)="handleCal(1)" [disabled]="rate1===undefined">
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    </mat-form-field>
+  </div>
+  <div style="display: flex; align-items: center; flex-flow: column; margin-top: 3%;" *ngIf="!isScreenLtMedium">
+    <mat-icon *ngIf="rate1 && rate2 && rate2>rate1" style="font-size: xxx-large; width: auto; height: auto;" matSuffix>chevron_right
+    </mat-icon>
+    <mat-icon *ngIf="rate1 && rate2 && rate1>rate2" style="font-size: xxx-large; width: auto; height: auto;" matSuffix>chevron_left
+    </mat-icon>
+    <mat-icon *ngIf="rate1==rate2" style="font-size: xxx-large; width: auto; height: auto;" matSuffix>sentiment_very_satisfied
+    </mat-icon>
+    <button matTooltip="Exchange" mat-icon-button (click)="interchange()" style=" margin-top: 40%;" [disabled]="rate1===undefined || rate2==undefined">
+      <mat-icon style="font-size:xx-large; width: auto;" matSuffix>compare_arrows</mat-icon>
+    </button>
+  </div>
+  <div style="text-align: center; width: 100%; display: flex; justify-content: center; margin-bottom: 2%; margin-top: 1%;" *ngIf="isScreenLtMedium">
+    <mat-icon *ngIf="rate1 && rate2 && rate2>rate1" style="font-size: xxx-large; width: auto; height: auto;" matSuffix>chevron_right
+    </mat-icon>
+    <mat-icon *ngIf="rate1 && rate2 && rate1>rate2" style="font-size: xxx-large; width: auto; height: auto;" matSuffix>chevron_left
+    </mat-icon>
+    <mat-icon *ngIf="rate1==rate2" style="font-size: xxx-large; width: auto; height: auto;" matSuffix>sentiment_very_satisfied
+    </mat-icon>
+    <button matTooltip="Exchange"
+    mat-icon-button
+    (click)="interchange()" [disabled]="rate1===undefined || rate2==undefined"
+  > <mat-icon style="font-size:xx-large; width: auto;" matSuffix>compare_arrows</mat-icon> </button>
+  </div>
+  <div style="text-align: center;"  [class.divSmallMonitor]="isScreenLtMedium && rate2!==undefined" >
+    <img [src]="currency2a.imageUrl" alt="" [class.imgSmallMonitor]="isScreenLtMedium && rate2!==undefined" [class.imgBigMonitor]="!isScreenLtMedium" />
+    <button style="display: block; width: 100%; color: white;" [matMenuTriggerFor]="currency2" matTooltip="Select Currency" mat-button
+      class="fiatBtn">
+      <span>{{ currency2a.name | uppercase }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-form-field appearance="legacy" style="margin-top: 4px;">
+      <mat-label>Currency 2</mat-label>
+      <input matInput placeholder="Enter a valid currency value" type="number" [(ngModel)]="currency2Value"
+        (ngModelChange)="handleCal(2)" [disabled]="rate2===undefined">
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    </mat-form-field>
+  </div>
+</div>
+
+
+
+
+
+<!-- c1 dropdown  -->
+<mat-menu #currency1="matMenu">
+  <ng-template matMenuContent>
+    <button
+      mat-menu-item
+      style="display: flex; justify-content: space-between"
+      *ngFor="let lang of fiatsArr"
+      (click)="dealCurrency(lang,1)"
+    >
+      <span
+        style="
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          text-align: center;
+          align-items: center;
+        "
+      >
+        <img class="img" [src]="lang.imageUrl" />
+        <span style="margin-left: 0.5rem">{{ lang.name }}</span>
+        <mat-icon style="margin-left: 0.5rem" *ngIf="lang.name === currency1a.name"
+          >check</mat-icon
+        >
+      </span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<!-- c2 dropdown  -->
+<mat-menu #currency2="matMenu">
+  <ng-template matMenuContent style="width: 100%;">
+    <button
+      mat-menu-item
+      style="display: flex; justify-content: space-between"
+      *ngFor="let lang of fiatsArr"
+      (click)="dealCurrency(lang,2)"
+    >
+      <span
+        style="
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          text-align: center;
+          align-items: center;
+        "
+      >
+        <img class="img" [src]="lang.imageUrl" />
+        <span style="margin-left: 0.5rem">{{ lang.name }}</span>
+        <mat-icon style="margin-left: 0.5rem" *ngIf="lang.name === currency2a.name"
+          >check</mat-icon
+        >
+      </span>
+    </button>
+  </ng-template>
+</mat-menu>
